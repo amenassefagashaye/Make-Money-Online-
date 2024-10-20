@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make Money Online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header h1 {
+      color: #4CAF50;
+      margin-top: 20px;
+    }
+
+    header h2 {
+      color: #FF9800;
+      margin-bottom: 20px;
+    }
+
+    #spin-section {
+      margin: 20px;
+      position: relative;
+      animation: spin-glow 3s infinite;
+    }
+
+    @keyframes spin-glow {
+      0% {box-shadow: 0 0 10px red;}
+      50% {box-shadow: 0 0 20px yellow;}
+      100% {box-shadow: 0 0 10px green;}
+    }
+
+    #spin-btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      transition: transform 2s ease;
+    }
+
+    #spin-btn:hover {
+      background-color: darkred;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #555;
+    }
+
+    .inactive-btn {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      background-color: #808080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: not-allowed;
+    }
+
+    .active-btn {
+      cursor: pointer;
+      background-color: #4CAF50;
+    }
+
+    .active-btn:hover {
+      background-color: #45a049;
+    }
+
+    #points-counter {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 18px;
+      background-color: yellow;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .section-wrapper {
+      border: 2px solid black;
+      margin: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      animation: border-glow 3s infinite;
+    }
+
+    @keyframes border-glow {
+      0% {border-color: red;}
+      50% {border-color: yellow;}
+      100% {border-color: green;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Make Money Online</h1>
+    <h2>Make 20 Dollars a day by spinning, completing tasks, mining, and bonuses</h2>
+  </header>
+  
+  <div id="spin-section" class="section-wrapper">
+    <button id="spin-btn" onclick="spinBoard()">Spin</button>
+    <div id="result">Spin Result: 0 Points</div>
+  </div>
+  
+  <section id="tasks-section" class="section-wrapper">
+    <h3>Tasks</h3>
+    <button id="task1" class="inactive-btn">Task 1 (YouTube - 500,000 points)</button>
+    <button id="task2" class="inactive-btn">Task 2 (Telegram - 100,000 points)</button>
+    <button id="task3" class="inactive-btn">Task 3 (TikTok - 100,000 points)</button>
+    <button id="task4" class="inactive-btn">Task 4 (Facebook - 100,000 points)</button>
+  </section>
+  
+  <section id="mining-section" class="section-wrapper">
+    <h3>Mining</h3>
+    <button id="mining-btn" class="inactive-btn">Start Mining</button>
+  </section>
+  
+  <section id="earning-section" class="section-wrapper">
+    <h3>Earning</h3>
+    <button id="earning-btn" class="inactive-btn">Earning Offers</button>
+  </section>
+  
+  <section id="bonus-section" class="section-wrapper">
+    <h3>Bonus</h3>
+    <button id="bonus-btn" class="inactive-btn">Claim Bonus</button>
+  </section>
+  
+  <section id="withdraw-section" class="section-wrapper">
+    <h3>Withdraw</h3>
+    <button id="withdraw-btn" class="inactive-btn">Withdraw</button>
+  </section>
+
+  <div id="points-counter">Total Points: 0</div>
+
+  <script>
+    let totalPoints = 0;
+    let currentStep = 0;
+    let spinsLeft = 3; // Allow 3 spins per day
+
+    function spinBoard() {
+      if (spinsLeft > 0) {
+        const spinDegrees = Math.floor(Math.random() * (900 - 360 + 1)) + 360;
+        const points = Math.floor(Math.random() * 500) + 1;
+        const spinBtn = document.getElementById('spin-btn');
+        
+        spinBtn.style.transform = `rotate(${spinDegrees}deg)`;
+
+        setTimeout(() => {
+          document.getElementById('result').textContent = `Spin Result: ${points} Points`;
+          totalPoints += points;
+          updatePointsCounter();
+          activateNextButton();
+          spinsLeft--;
+          if (spinsLeft === 0) {
+            disableSpin();
+          }
+        }, 2000); // Spin for 2 seconds
+      } else {
+        alert('You have finished daily points');
+      }
+    }
+
+    function disableSpin() {
+      document.getElementById('spin-btn').disabled = true;
+      document.getElementById('spin-btn').style.cursor = 'not-allowed';
+      document.getElementById('spin-btn').style.backgroundColor = 'gray';
+    }
+
+    function updatePointsCounter() {
+      document.getElementById('points-counter').textContent = `Total Points: ${totalPoints}`;
+    }
+
+    function activateNextButton() {
+      const buttons = [
+        document.getElementById('task1'),
+        document.getElementById('task2'),
+        document.getElementById('task3'),
+        document.getElementById('task4'),
+        document.getElementById('mining-btn'),
+        document.getElementById('earning-btn'),
+        document.getElementById('bonus-btn'),
+        document.getElementById('withdraw-btn')
+      ];
+
+      if (currentStep < buttons.length) {
+        buttons[currentStep].classList.remove('inactive-btn');
+        buttons[currentStep].classList.add('active-btn');
+        buttons[currentStep].disabled = false;
+        currentStep++;
+      }
+    }
+
+    function handleButtonClick(buttonIndex, url) {
+      if (buttonIndex === currentStep - 1) {
+        window.location.href = url;
+      } else {
+        alert('Please complete the tasks in order.');
+      }
+    }
+
+    document.getElementById('task1').addEventListener('click', () => handleButtonClick(0, 'https://www.youtube.com/channel/UCLBivSEh30F44ptAAgEVRUA?sub_confirmation=1'));
+    document.getElementById('task2').addEventListener('click', () => handleButtonClick(1, 'https://t.me/GOGSmore'));
+    document.getElementById('task3').addEventListener('click', () => handleButtonClick(2, 'https://www.tiktok.com/@assefagashaye'));
+    document.getElementById('task4').addEventListener('click', () => handleButtonClick(3, 'https://web.facebook.com/profile.php?id=61566279998745'));
+    document.getElementById('mining-btn').addEventListener('click', () => handleButtonClick(4, 'https://www.coinpayu.com/dashboard'));
+    document.getElementById('earning-btn').addEventListener('click', () => handleButtonClick(5, 'https://cointiply.com/offers'));
+    document.getElementById('bonus-btn').addEventListener('click', () => handleButtonClick(6, 'https://freebitco.in/?op=home&tab=earn_btc'));
+    document.getElementById('withdraw-btn').addEventListener('click', () => handleButtonClick(7, 'https://www.binance.com/en/earn'));
+  </script>
+</body>
+</html>
